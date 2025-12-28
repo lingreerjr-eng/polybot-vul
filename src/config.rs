@@ -17,6 +17,9 @@ pub struct Config {
 
     pub bankroll_fraction: f64,
     pub reserve_usdc: f64,
+
+    pub max_daily_loss: f64,
+    pub max_inventory_per_token: f64,
 }
 
 impl Config {
@@ -48,6 +51,9 @@ impl Config {
                 .unwrap_or("2.0".into())
                 .parse()
                 .unwrap(),
+
+            max_daily_loss: env::var("MAX_DAILY_LOSS").unwrap_or("25".into()).parse().unwrap(),
+            max_inventory_per_token: env::var("MAX_INVENTORY").unwrap_or("50".into()).parse().unwrap(),
         }
     }
 }
