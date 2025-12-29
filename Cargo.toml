@@ -1,0 +1,58 @@
+[package]
+name = "polymarket-arb-bot"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# Official Polymarket Rust SDK
+polymarket-client-sdk = "0.1"
+
+# Async runtime
+tokio = { version = "1", features = ["full"] }
+tokio-tungstenite = { version = "0.24", features = ["native-tls"] }
+futures-util = "0.3"
+
+# Signing and crypto (match polymarket-client-sdk version)
+alloy = { version = "1.1", features = ["signers", "signer-local"] }
+k256 = "0.13"
+
+# Decimal precision
+rust_decimal = "1.36"
+rust_decimal_macros = "1.36"
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# HTTP client
+reqwest = { version = "0.12", features = ["json"] }
+
+# Error handling
+anyhow = "1.0"
+thiserror = "1.0"
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# Environment variables
+dotenvy = "0.15"
+
+# Time utilities
+chrono = "0.4"
+
+# Regex
+regex = "1"
+
+# Web3 for on-chain operations (optional)
+ethers = { version = "2.0", optional = true }
+
+[features]
+default = []
+onchain = ["ethers"]
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true

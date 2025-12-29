@@ -1,0 +1,58 @@
+.PHONY: help build run test clean install deploy logs
+
+help:
+	@echo "Polymarket Arbitrage Bot - Commands"
+	@echo ""
+	@echo "Local Development:"
+	@echo "  make build     - Build release binary"
+	@echo "  make run       - Run bot (uses .env)"
+	@echo "  make test      - Run tests"
+	@echo "  make clean     - Clean build artifacts"
+	@echo ""
+	@echo "VPS Deployment:"
+	@echo "  make deploy    - Deploy to VPS (run on VPS)"
+	@echo "  make logs      - View systemd logs (run on VPS)"
+	@echo ""
+
+build:
+	@echo "Building release binary..."
+	cargo build --release
+	@echo ""
+	@echo "Binary: target/release/polymarket-arb-bot"
+
+run:
+	@echo "Starting bot..."
+	RUST_LOG=info cargo run --release
+
+test:
+	@echo "Running tests..."
+	cargo test
+
+clean:
+	@echo "Cleaning build artifacts..."
+	cargo clean
+
+install:
+	@echo "Installing to ~/.cargo/bin..."
+	cargo install --path .
+
+deploy:
+	@echo "Deploying to VPS..."
+	@chmod +x deploy-vps.sh
+	@./deploy-vps.sh
+
+logs:
+	@sudo journalctl -u polymarket-bot -f
+
+# Development shortcuts
+dev:
+	@RUST_LOG=debug cargo run
+
+check:
+	@cargo check
+
+fmt:
+	@cargo fmt
+
+clippy:
+	@cargo clippy -- -D warnings
